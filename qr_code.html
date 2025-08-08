@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Escanear QR</title>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+  <div id="reader" style="width:300px;"></div>
+  <div id="resultado"></div>
+
+  <script>
+    function onScanSuccess(decodedText, decodedResult) {
+      document.getElementById('resultado').innerText = `QR Detectado: ${decodedText}`;
+    }
+
+    const html5QrCode = new Html5Qrcode("reader");
+
+    Html5Qrcode.getCameras().then(devices => {
+      if (devices && devices.length) {
+        let cameraId = devices[0].id;
+        html5QrCode.start(
+          cameraId,
+          {
+            fps: 10,
+            qrbox: { width: 250, height: 250 }
+          },
+          onScanSuccess
+        );
+      }
+    });
+  </script>
+</body>
+</html>
